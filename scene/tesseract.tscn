@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://bxxdno7f3a3bd"]
+
+[ext_resource type="Script" uid="uid://c3lee1q3hxv5t" path="res://scripts/Tesseract.cs" id="1_4n0jm"]
+[ext_resource type="Script" uid="uid://ckrmriwqj7cqg" path="res://scripts/Camera3d.cs" id="2_jhaqw"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhaqw"]
+sky_top_color = Color(0.68949676, 0.5371326, 1, 1)
+sky_horizon_color = Color(0.33882895, 0.6756894, 1, 1)
+sky_energy_multiplier = 1.1
+
+[sub_resource type="Sky" id="Sky_dur6t"]
+sky_material = SubResource("ProceduralSkyMaterial_jhaqw")
+
+[sub_resource type="Environment" id="Environment_fkuhr"]
+background_mode = 2
+sky = SubResource("Sky_dur6t")
+ambient_light_source = 3
+ambient_light_energy = 0.5
+reflected_light_source = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4n0jm"]
+albedo_color = Color(0.2132613, 0.49559516, 0.22385228, 1)
+roughness = 0.4
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4n0jm"]
+material = SubResource("StandardMaterial3D_4n0jm")
+size = Vector2(1000, 1000)
+
+[node name="Tesseract" type="Node3D"]
+script = ExtResource("1_4n0jm")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.98480767, 0.17364816, 0, -0.17364816, 0.98480767, 0, 1, 0.5)
+fov = 67.5
+near = 0.016
+script = ExtResource("2_jhaqw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8660254, -0.35355338, 0.35355338, 0, 0.70710677, 0.70710677, -0.5, -0.6123724, 0.6123724, 0, 0, 0)
+light_energy = 2.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.8
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_fkuhr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08930969, 0.078362465, -0.17519951)
+mesh = SubResource("PlaneMesh_4n0jm")

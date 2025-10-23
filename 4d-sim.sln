@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4d-sim", "4d-sim.csproj", "{CC7456E4-6520-4D79-A287-050889C5E749}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC7456E4-6520-4D79-A287-050889C5E749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC7456E4-6520-4D79-A287-050889C5E749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC7456E4-6520-4D79-A287-050889C5E749}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{CC7456E4-6520-4D79-A287-050889C5E749}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{CC7456E4-6520-4D79-A287-050889C5E749}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{CC7456E4-6520-4D79-A287-050889C5E749}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal
