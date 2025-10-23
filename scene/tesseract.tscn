@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bxxdno7f3a3bd"]
 
-[ext_resource type="Script" uid="uid://c3lee1q3hxv5t" path="res://scripts/Tesseract.cs" id="1_4n0jm"]
+[ext_resource type="Script" uid="uid://c3lee1q3hxv5t" path="res://scripts/shapes/Tesseract.cs" id="1_4n0jm"]
 [ext_resource type="Script" uid="uid://ckrmriwqj7cqg" path="res://scripts/Camera3d.cs" id="2_jhaqw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhaqw"]

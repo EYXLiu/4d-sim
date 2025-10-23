@@ -42,7 +42,7 @@ public partial class Camera3d : Camera3D
 		{
 			if (keyEvent.Pressed && keyEvent.Keycode == Key.Space)
 			{
-				Rotation = Vector3.Zero;
+				LookAt(Vector3.Zero, Vector3.Up);
 			}
 		}
 	}
