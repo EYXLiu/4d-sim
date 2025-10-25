@@ -42,7 +42,7 @@ public partial class Tesseract : Shape4d
 	}
 	protected override void InitFaces()
 	{
-		(List<Vector3> vertices3D, List<int[]> faces) = Python.RunMeshScript(vertices);
+		(List<Vector4> vertices4D, List<int[]> faces) = Python.RunMeshScript(vertices);
 	}
 	
 	//protected override void Outline() {}

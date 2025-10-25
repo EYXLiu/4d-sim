@@ -1,7 +1,7 @@
 import json
 import sys
 import numpy as np
-from scipy.spatial import ConvexHull
+from scipy.spatial import Delaunay
 
 file_path = "scripts/mesh_input" 
 
@@ -12,38 +12,38 @@ def load_input(file_path):
     vertices = np.array(data["vertices"])
     return vertices
 
-def project_to_3d(vertices4d, d=5.0):
-    """
-    Project 4D vertices to 3D.
-    d: distance for perspective projection
-    """
-    w = vertices4d[:, 3]
-    factor = 1 / (d - w)
-    return vertices4d[:, :3] * factor[:, np.newaxis]
-
-def compute_convex_hull(vertices3d):
+def compute_delaunay(vertices4d):
     """Compute convex hull of 3D vertices."""
-    hull = ConvexHull(vertices3d)
-    return hull
+    return Delaunay(vertices4d)
 
-def save_output(vertices3d, hull, output_path):
-    """Save 3D mesh (vertices + faces) to JSON."""
+def simplices_4d_to_tetrahedra(simplices_4d):
+    tets = []
+    for s in simplices_4d:
+        v0, v1, v2, v3, v4 = s
+        tets.append([v0, v1, v2, v3])
+        tets.append([v0, v1, v2, v4])
+        tets.append([v0, v1, v3, v4])
+        tets.append([v0, v2, v3, v4])
+        tets.append([v1, v2, v3, v4])
+    return np.array(tets)
+
+def save_output(vertices3d, tets, output_path):
     mesh_data = {
         "vertices": vertices3d.tolist(),
-        "faces": hull.simplices.tolist()
+        "tetrahedra": tets.tolist()
     }
     with open(output_path, "w") as f:
         json.dump(mesh_data, f)
-    print(f"Saved 3D mesh to {output_path}")
+    print(f"Saved 3D tetrahedral mesh to {output_path}")
 
 def main():
     input_file = "mesh_input.json"
     output_file = "mesh_output.json"
     
     vertices4d = load_input(input_file)
-    vertices3d = project_to_3d(vertices4d)
-    hull = compute_convex_hull(vertices3d)
-    save_output(vertices3d, hull, output_file)
+    mesh = compute_delaunay(vertices4d)
+    tets3d = simplices_4d_to_tetrahedra(mesh.simplices)
+    save_output(vertices4d, tets3d, output_file)
 
 if __name__ == "__main__":
     main()

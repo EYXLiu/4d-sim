@@ -13,7 +13,7 @@ public class Python
 	private readonly static string MeshInput = "mesh_input.json";
 	private readonly static string MeshOutput = "mesh_output.json";
 	
-	public static (List<Vector3> vertices, List<int[]> faces) RunMeshScript(Vector4[] vertices4D)
+	public static (List<Vector4> vertices, List<int[]> faces) RunMeshScript(Vector4[] vertices4D)
 	{
 		var data = new
 		{
@@ -49,33 +49,35 @@ public class Python
 		if (!File.Exists(MeshOutput))
 		{
 			GD.PrintErr("Python did not generate output file: " + MeshOutput);
-			return (new List<Vector3>(), new List<int[]>());
+			return (new List<Vector4>(), new List<int[]>());
 		}
 		
 		string json = File.ReadAllText(MeshOutput);
 		using JsonDocument doc = JsonDocument.Parse(json);
 		var root = doc.RootElement;
 		
-		List<Vector3> vertices3D = [];
+		List<Vector4> vertices3D = [];
 		foreach (var v in root.GetProperty("vertices").EnumerateArray())
 		{
-			vertices3D.Add(new Vector3(
+			vertices3D.Add(new Vector4(
 				v[0].GetSingle(),
 				v[1].GetSingle(),
-				v[2].GetSingle()
+				v[2].GetSingle(),
+				v[3].GetSingle()
 			));
 		}
 		
-		List<int[]> faces = [];
-		foreach (var face in root.GetProperty("faces").EnumerateArray())
+		List<int[]> tets = [];
+		foreach (var tet in root.GetProperty("tetrahedra").EnumerateArray())
 		{
-			faces.Add(
+			tets.Add(
 			[
-				face[0].GetInt32(),
-				face[1].GetInt32(),
-				face[2].GetInt32()
+				tet[0].GetInt32(),
+				tet[1].GetInt32(),
+				tet[2].GetInt32(),
+				tet[3].GetInt32()
 			]);
 		}
-		return (vertices3D, faces);
+		return (vertices3D, tets);
 	}
 }
