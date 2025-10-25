@@ -1,6 +1,7 @@
 # About
 A 4d-simulator using Godot and C# to display 4d on a 3d plane <br/>
 Utilizes custom Vector4, Transform4, and Shape4 classes <br/>
+Uses C# to call Python scripts, Scipy library, and the Delaunay 4D triangulation formula to retrieve the 3d mesh of the 4d shape <br/>
 
 # Credits
 Thanks to b2studios and codeparade for the inspiration <br/>
