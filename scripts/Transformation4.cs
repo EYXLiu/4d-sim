@@ -59,7 +59,7 @@ public struct Transformation4
 		Transformation4 t = Transformation4.Identity;
 		float c = Mathf.Cos(angle);
 		float s = Mathf.Sin(angle);
-		t.m[0,3] = c;
+		t.m[0,0] = c;
 		t.m[0,3] = -s;
 		t.m[3,0] = s;
 		t.m[3,3] = c;

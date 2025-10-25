@@ -7,10 +7,7 @@ public struct Vector4
 
 	public Vector4(float x, float y, float z, float w)
 	{
-		X = x;
-		Y = y;
-		Z = z;
-		W = w;
+		X = x; Y = y; Z = z; W = w;
 	}
 
 	public static Vector4 operator +(Vector4 a, Vector4 b)

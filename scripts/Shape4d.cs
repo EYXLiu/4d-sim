@@ -6,19 +6,22 @@ public abstract partial class Shape4d : Node3D
 {
 	protected Vector4[] vertices;
 	protected int[,] edges;
+	protected int[][] faces;
+	protected float scale = 2f;
 	
 	private float rotationSpeed = 0.01f;
 	private Vector2 lastMousePos;
 	private bool leftMouseDown = false;
 	private bool rightMouseDown = false;
 	
-	private ImmediateMesh mesh;
-	private MeshInstance3D meshInstance;
+	protected ImmediateMesh mesh;
+	protected MeshInstance3D meshInstance;
 	
 	public override void _Ready()
 	{
 		InitVertices();
 		InitEdges();
+		InitFaces();
 		
 		lastMousePos = GetViewport().GetMousePosition();
 		
@@ -51,7 +54,7 @@ public abstract partial class Shape4d : Node3D
 
 		if (rightMouseDown)
 		{
-			rotation = Transformation4.RotateXW(angleY) * Transformation4.RotateZW(angleX);
+			rotation = Transformation4.RotateXW(angleX) * Transformation4.RotateZW(angleY);
 		}
 		else if (leftMouseDown)
 		{
@@ -64,46 +67,25 @@ public abstract partial class Shape4d : Node3D
 		}
 
 		lastMousePos = mousePos;
+		Outline();
 		UpdateMesh();
 	}
 	
 	protected abstract void InitVertices();
 	protected abstract void InitEdges();
-
-	protected virtual void UpdateMesh()
+	protected abstract void InitFaces();
+	
+	protected virtual void Outline()
 	{
 		mesh.ClearSurfaces();
-		mesh.SurfaceBegin(Mesh.PrimitiveType.Triangles);
-		
-		mesh.SurfaceSetColor(new Color(0.2f, 0.4f, 1.0f, 0.3f));
-		
-		float size = 3f;
-		Vector3[] planeVerts = {
-			new Vector3(-size, 0, -size),
-			new Vector3(size, 0, -size),
-			new Vector3(size, 0, size),
-			new Vector3(-size, 0, size)
-		};
-		
-		mesh.SurfaceAddVertex(planeVerts[0]);
-		mesh.SurfaceAddVertex(planeVerts[1]);
-		mesh.SurfaceAddVertex(planeVerts[2]);
-
-		mesh.SurfaceAddVertex(planeVerts[2]);
-		mesh.SurfaceAddVertex(planeVerts[3]);
-		mesh.SurfaceAddVertex(planeVerts[0]);
-
-		mesh.SurfaceEnd();
-
 		mesh.SurfaceBegin(Mesh.PrimitiveType.Lines);
+
+		List<Vector3> verts3d = Visuals.SliceVertices(vertices);
 
 		for (int i = 0; i < edges.GetLength(0); i++)
 		{
-			var v1 = vertices[edges[i, 0]];
-			var v2 = vertices[edges[i, 1]];
-
-			Vector3 p1 = new Vector3(v1.X + v1.W * 0.5f, v1.Y + v1.W * 0.5f, v1.Z);
-			Vector3 p2 = new Vector3(v2.X + v2.W * 0.5f, v2.Y + v2.W * 0.5f, v2.Z);
+			Vector3 p1 = verts3d[edges[i, 0]];
+			Vector3 p2 = verts3d[edges[i, 1]];
 
 			mesh.SurfaceAddVertex(p1);
 			mesh.SurfaceAddVertex(p2);
@@ -111,4 +93,6 @@ public abstract partial class Shape4d : Node3D
 
 		mesh.SurfaceEnd();
 	}
+	
+	protected virtual void UpdateMesh() {}
 }

@@ -12,9 +12,9 @@ public partial class Tesseract : Shape4d
 		for (int y = -1; y <= 1; y += 2)
 		for (int z = -1; z <= 1; z += 2)
 		for (int w = -1; w <= 1; w += 2)
-			vertices[i++] = new Vector4(x * 2f, y * 2f, z * 2f, w * 2f);
+			vertices[i++] = new Vector4(x * scale, y * scale, z * scale, w * scale);
 	}
-
+	
 	protected override void InitEdges()
 	{
 		List<int[]> edgeList = new List<int[]>();
@@ -40,34 +40,17 @@ public partial class Tesseract : Shape4d
 			edges[k, 1] = edgeList[k][1];
 		}
 	}
-
-	protected List<Vector2> ComputeSlice()
+	protected override void InitFaces()
 	{
-		List<Vector2> slicePoints = new List<Vector2>();
-
-		for (int i = 0; i < edges.GetLength(0); i++)
-		{
-			Vector4 v1 = vertices[edges[i,0]];
-			Vector4 v2 = vertices[edges[i,1]];
-
-			float dy = v2.Y - v1.Y;
-			float dw = v2.W - v1.W;
-
-			if (Math.Abs(dy) > 0 && Math.Abs(dw) > 0)
-			{
-				float tY = (0f - v1.Y) / dy;
-				float tW = (0f - v1.W) / dw;
-
-				if (Mathf.Abs(tY - tW) < 0.01f && tY >= 0f && tY <= 1f)
-				{
-					float t = tY;
-					float x = v1.X + t * (v2.X - v1.X);
-					float z = v1.Z + t * (v2.Z - v1.Z);
-					slicePoints.Add(new Vector2(x, z));
-					slicePoints.Add(new Vector2(x, z));
-				}
-			}
-		}
-		return slicePoints;
+		(List<Vector3> vertices3D, List<int[]> faces) = Python.RunMeshScript(vertices);
+	}
+	
+	//protected override void Outline() {}
+	
+	protected override void UpdateMesh()
+	{
+		List<Vector3> verts3d = Visuals.SliceVertices(vertices);
+		
+		Vector3 center = Vector3.Zero;
 	}
 }
